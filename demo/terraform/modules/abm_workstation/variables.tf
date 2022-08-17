@@ -24,7 +24,8 @@ variable "gce-roles" {
         "multiclusterservicediscovery.serviceAgent",
         "multiclusterservicediscovery.serviceAgent",
         "secretmanager.secretAccessor",
-        "editor"
+        "editor",
+        "meshconfig.admin"
     ]
   
 }
