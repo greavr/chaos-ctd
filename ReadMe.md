@@ -19,6 +19,7 @@ This will setup your permissions for terraform to run.
 ## Deploy guide
 ```
 cd terraform
+./setup.sh
 terraform init
 terraform plan
 terraform apply
