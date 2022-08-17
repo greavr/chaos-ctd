@@ -111,8 +111,45 @@ asmcli install \
   --kubeconfig ~/.kube/config \
   --output_dir abm-gce \
   --platform multicloud \
-  --enable_all \
+  --enable_gcp_apis \
   --ca mesh_ca >> asmcli
   
   
-  # Configure ACM
+# Configure ACM
+cat <<EOF >acm-controller.yaml
+apiVersion: configmanagement.gke.io/v1
+kind: ConfigManagement
+metadata:
+  name: config-management
+spec:
+  # Set to true to install and enable Policy Controller
+  policyController:
+    enabled: true
+EOF
+
+kubectl apply -f acm-controller.yaml
+
+## Apply policy sync with repo
+cat <<EOF >acm-policy.yaml
+applySpecVersion: 1
+spec:
+  configSync:
+    # Set to true to install and enable Config Sync
+    enabled: true
+    # If you don't have a Git repository, omit the following fields. You
+    # can configure them later.
+    sourceFormat: unstructured
+    syncRepo: $GCP_REPO
+    syncBranch: main
+    secretType: gcpserviceaccount
+    gcpServiceAccountEmail: $GCP_ACM_SA
+    policyDir: /
+    # the `preventDrift` field is supported in Anthos Config Management version 1.10.0 and later.
+    preventDrift: false
+EOF
+
+  gcloud beta container hub config-management apply \
+      --membership=abm-gce \
+      --config=acm-policy.yaml \
+      --project=$CLOUD_PROJECT_ID
+
