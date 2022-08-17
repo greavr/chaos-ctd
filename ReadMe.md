@@ -1,12 +1,12 @@
-# Hipster Click To Deploy
+# Chaos Demo Click To Deploy
 
 Requirement: **GCP PROJECT INTO WHICH TO DEPLOY**
 
-# Tool Setup Guide
+## Tool Setup Guide
 
 [Tool Install Guide](tools/ReadMe.md)
 
-# Environment Setup
+## Environment Setup
 * Install tools
 * Run the following commands to login to gcloud:
 ```
@@ -16,7 +16,7 @@ gcloud auth application-default login
 
 This will setup your permissions for terraform to run.
 
-# Deploy guide
+## Deploy guide
 ```
 cd terraform
 terraform init
@@ -24,10 +24,12 @@ terraform plan
 terraform apply
 ```
 
-# After it has applied time to apply kubernetes yaml
-```
-mv main8.tfx main.tf
-terraform init --upgrade
-terrafrom plan
-terraform apply
-```
+# Todo:
+- [x] Build Project
+- [x] 2x GKE Project
+- [x] 1x ABM
+- [ ] Deploy ASM
+- [ ] Deploy ACM
+- [ ] Deploy Metrics Board
+- [ ] Deploy Application Yaml
+- [ ] Deploy Cloud Run Control Instance
