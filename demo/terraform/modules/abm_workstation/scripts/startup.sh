@@ -96,3 +96,23 @@ sed -i "s/project\_id/$CLOUD_PROJECT_ID/g" /abm/bmctl-workspace/abm-gce/abm-gce.
 
 # Create cluster
 bmctl create cluster -c abm-gce >> log.log
+
+# Do cluster work
+cp /abm/bmctl-workspace/abm-gce/abm-gce-kubeconfig ~/.kube/config
+bmctl install virtctl
+
+# Configure ASM
+curl https://storage.googleapis.com/csm-artifacts/asm/asmcli > asmcli
+chmod a+x asmcli
+mv asmcli /usr/local/sbin
+
+asmcli install \
+  --fleet_id $CLOUD_PROJECT_ID \
+  --kubeconfig ~/.kube/config \
+  --output_dir abm-gce \
+  --platform multicloud \
+  --enable_all \
+  --ca mesh_ca >> asmcli
+  
+  
+  # Configure ACM
